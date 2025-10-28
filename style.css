@@ -1,4 +1,3 @@
-/* 🌍 FRONT LANDING PAGE */
 .front-page {
   position: fixed;
   top: 0; left: 0;
@@ -96,15 +95,12 @@
   transform: translateY(-3px);
 }
 
-/* 🌈 Fade animation for transition */
+
 #frontPage {
   opacity: 1;
   transition: opacity 0.8s ease-in-out;
 }
 
-/* ============================= */
-/* EXISTING BOOKING PAGE STYLES */
-/* ============================= */
 
 :root {
   --teal: #07a58a;
@@ -238,7 +234,7 @@ input[type="text"], input[type="date"], select {
 .radio-row { align-items: center; }
 .actions { margin-top: 12px; }
 
-/* Flights layout */
+
 #flightsContainer {
   display: flex;
   gap: 18px;
@@ -289,7 +285,7 @@ input[type="text"], input[type="date"], select {
 }
 .select-btn:hover { background: #05836f; }
 
-/* Promo section */
+
 .promo-section {
   display: flex;
   gap: 10px;
@@ -315,7 +311,7 @@ input[type="text"], input[type="date"], select {
   color: #0e2b2a;
 }
 
-/* Passengers and Summary */
+
 #passengersContainer {
   display: flex;
   flex-direction: column;
