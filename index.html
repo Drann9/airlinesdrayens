@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SkyPlane — Booking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- 🌍 FRONT LANDING PAGE -->
+  <section id="frontPage" class="front-page">
+    <div class="overlay"></div>
+    <div class="front-content">
+      <h5>Save time and fly with comfort</h5>
+      <h1>SKYPLANE AIRLINES</h1>
+      <h3>Luxury Jet Flights</h3>
+      <div class="front-buttons">
+        <button id="enterBooking" class="btn-gold">Book Now</button>
+        <button class="btn-white">Read More</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ✈️ EXISTING BOOKING APP -->
+  <div class="app" id="bookingApp" style="display:none">
+    <header class="app-header">
+      <div class="brand">SkyPlane</div>
+      <nav class="top-nav">
+        <a href="#" class="nav-link">Help</a>
+        <a href="#" class="nav-link">My Trips</a>
+        <button class="btn btn-outline">Sign Up</button>
+        <button class="btn btn-primary">Log In</button>
+      </nav>
+    </header>
+
+    <div class="stepper" id="stepper">
+      <div class="step" data-step="0"><div class="circle">1</div><div class="text">Home</div></div>
+      <div class="step" data-step="1"><div class="circle">2</div><div class="text">Booking</div></div>
+      <div class="step" data-step="2"><div class="circle">3</div><div class="text">Flights</div></div>
+      <div class="step" data-step="3"><div class="circle">4</div><div class="text">Passengers</div></div>
+      <div class="step" data-step="4"><div class="circle">5</div><div class="text">Summary</div></div>
+    </div>
+
+    <main class="content">
+      <!-- Home -->
+      <section class="panel" data-panel="0">
+        <div class="hero">
+          <h1>Welcome to SkyPlane</h1>
+          <p>Fast, safe, and comfortable flights. Start booking your trip now.</p>
+          <button id="bookBtn" class="cta">Book A Flight</button>
+        </div>
+      </section>
+
+      <!-- Booking Details -->
+      <section class="panel" data-panel="1" hidden>
+        <h2>Booking Details</h2>
+        <form id="bookingForm" class="booking-form" onsubmit="return false;">
+          <div class="row">
+            <label>From<input id="from" type="text" placeholder="Departure city" required></label>
+            <label>To<input id="to" type="text" placeholder="Destination city" required></label>
+          </div>
+
+          <div class="row radio-row">
+            <label><input name="tripType" type="radio" value="round" checked> Round Trip</label>
+            <label><input name="tripType" type="radio" value="oneway"> One Way</label>
+          </div>
+
+          <div class="row">
+            <label>Depart Date<input id="departDate" type="date" required></label>
+            <label id="returnWrap">Return Date<input id="returnDate" type="date"></label>
+          </div>
+
+          <div class="row">
+            <label>Passengers
+              <select id="passengers">
+                <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button id="searchFlights" class="btn btn-primary">Search Flights</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Flights -->
+      <section class="panel" data-panel="2" hidden>
+        <h2>Available Flights</h2>
+
+        <!-- Promo Code Section -->
+        <div class="promo-section">
+          <input type="text" id="promoCode" placeholder="Enter promo code (SKY10, VIP20, FIRST30)" />
+          <button id="applyPromo" class="btn btn-primary">Apply</button>
+        </div>
+        <small id="promoDesc" class="promo-desc"></small>
+
+        <div id="flightsContainer">
+          <div class="flights-column" id="departList">
+            <h3>Depart Flights</h3>
+            <div class="list flight-grid" id="departFlights"></div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="flights-column" id="returnList" style="display:none">
+            <h3>Return Flights</h3>
+            <div class="list flight-grid" id="returnFlights"></div>
+          </div>
+        </div>
+
+        <div class="total">Total Price: <span id="totalPrice">₱0</span></div>
+        <div class="note">Select the flight(s) you want. Once selected, click Next to continue.</div>
+      </section>
+
+      <!-- Passengers -->
+      <section class="panel" data-panel="3" hidden>
+        <h2>Passenger Information</h2>
+        <form id="passengerForm" onsubmit="return false;">
+          <div id="passengersContainer"></div>
+          <div class="actions">
+            <button id="savePassengers" class="btn btn-primary">Save Passenger(s)</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Summary -->
+      <section class="panel" data-panel="4" hidden>
+        <h2>Booking Summary</h2>
+        <div id="summary"></div>
+        <div class="actions">
+          <button id="bookNow" class="btn btn-primary">Book Now</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer-controls">
+      <div class="step-info">Step <span id="curStep">1</span> of 5</div>
+      <div class="controls">
+        <button id="prevBtn" class="btn btn-outline" disabled>Back</button>
+        <button id="nextBtn" class="btn btn-primary">Next</button>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // 🎬 FRONT PAGE → BOOKING TRANSITION
+    document.addEventListener('DOMContentLoaded', () => {
+      const enterBtn = document.getElementById('enterBooking');
+      const frontPage = document.getElementById('frontPage');
+      const bookingApp = document.getElementById('bookingApp');
+
+      if (enterBtn && frontPage && bookingApp) {
+        enterBtn.addEventListener('click', () => {
+          frontPage.style.opacity = '0';
+          setTimeout(() => {
+            frontPage.style.display = 'none';
+            bookingApp.style.display = 'block';
+          }, 600);
+        });
+      }
+    });
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>
